@@ -367,32 +367,34 @@ void Default()
 			}
 	
 
-
-			/* Check if the pass entered is correct or not*/
-			Check = CheckPassword(TempPass);
-	
-			/* If Correct --> System will open and wrong times will be cleared*/
-			if(Check == VALID_CODE)
+			if(Default_Semaphore == 1)
 			{
-				LCD_Clear(LCD_Config);
-				LCD_WriteString(LCD_Config, "Password Correct, Locker Opening");
-				_delay_ms(1000);
+				/* Check if the pass entered is correct or not*/
+				Check = CheckPassword(TempPass);
+	
+				/* If Correct --> System will open and wrong times will be cleared*/
+				if(Check == VALID_CODE)
+				{
+					LCD_Clear(LCD_Config);
+					LCD_WriteString(LCD_Config, "Password Correct, Locker Opening");
+					_delay_ms(1000);
 
-				Clear_Wrong_Times();
-				Default_Semaphore = 0;
-				Open_Locker_Semaphore = 1;
+					Clear_Wrong_Times();
+					Default_Semaphore = 0;
+					Open_Locker_Semaphore = 1;
 		
-				return;
-			}
+					return;
+				}
 	
-			/* If not System will not open and Number of Wrong times will increment */
-			else 
-			{
-				LCD_Clear(LCD_Config);
-				LCD_WriteString(LCD_Config, "Password isn't Correct, Enter it again");
-				_delay_ms(1000);
+				/* If not System will not open and Number of Wrong times will increment */
+				else 
+				{
+					LCD_Clear(LCD_Config);
+					LCD_WriteString(LCD_Config, "Password isn't Correct, Enter it again");
+					_delay_ms(1000);
 				
-				Send_Wrong_Times(++Wrong_Times_Counter);
+					Send_Wrong_Times(++Wrong_Times_Counter);
+				}
 			}
 		}
 	}
